@@ -1,9 +1,10 @@
+import java.awt.*;
 
-public class MainBankingClass {
+public class MainBankingClass extends CustomUtilities {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		GUI loginScreen = new GUI();
+		
 	}
 
 }
