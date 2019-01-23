@@ -1,7 +1,47 @@
-import java.awt.*; 
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 
+
+
 public class GUI extends JFrame{
+	
+	//Private to GUI class
+	private static String usernameAdmin;
+	private static String passwordAdmin;
+			
+	//Login credentials mutator
+	public static void setCredentials(String user, String pass) {
+		usernameAdmin = user;
+		passwordAdmin = pass;
+	}
+			
+	//Username Accessor
+	public static String getUsername() {
+		return usernameAdmin;
+	}
+	//Password Accessor
+	public static String getPassword() {
+		return passwordAdmin;
+	}	
+	
+	public static boolean passwordCheck(String password) {
+		if (password.equals(passwordAdmin)) {
+			return true;
+		}else {
+			return false;
+		}			
+	}
+	
+	public static boolean usernameCheck(String username) {
+		if (username.equals(usernameAdmin)) {
+			return true;
+		}else {
+			return false;
+		}			
+	}
 	
 	//Components
 	JFrame loginFrame;
@@ -27,7 +67,6 @@ public class GUI extends JFrame{
 		titleFont = new Font("Shree Devanagari 714", Font.PLAIN, 22);
 		defaultFont = new Font("Shree Devanagari 714", Font.PLAIN, 12);
 
-		
 		//Object assignment
 		loginFrame = new JFrame();
 		loginPanel = new JPanel();
@@ -70,8 +109,7 @@ public class GUI extends JFrame{
 		//Modify password text field
 		adminPassField.setColumns(10);
 		
-
-
+		
 		//CONSTRAINTS
 		
 		//Constraints for "Administrator Login" Label
@@ -98,15 +136,6 @@ public class GUI extends JFrame{
 		mainLayout.putConstraint(SpringLayout.NORTH, adminPassField, 15, SpringLayout.SOUTH, usernameText);
 		mainLayout.putConstraint(SpringLayout.WEST, adminPassField, 0, SpringLayout.WEST, adminUserField);
 		
-		
-		
-		
-
-		
-		
-		
-		
-		
 		loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		//Console initializer 
@@ -126,7 +155,64 @@ public class GUI extends JFrame{
 		
 		//Visibilities
 		loginFrame.setVisible(true);
+		loginFrame.setResizable(false);
+		
+		//Event Listeners
+		
+		//Object of eventHandler class 
+		eventHandler eventHandlerObj = new eventHandler();
+		loginButton.addActionListener(eventHandlerObj);
+
+	}//End Constructor
+	
+	
+
+	
+	//Private class within GUI
+	public class eventHandler implements ActionListener{
+		//Action listener required implementation of event triggering method
+		
+		
+		//This method handles event under the circumstances an event of occurring
+		public void actionPerformed(ActionEvent event) {	
 		
 
-	}
+			
+		
+			
+			//Create empty strings to hold empty login data
+			String usernameStorage = "";
+			String passwordStorage = "";
+			
+			//Source refers to the location of event
+			
+			//Event for login button press
+			if (event.getSource() == loginButton) {
+				System.out.println("Login sequence commenced");
+				
+				//Store username and password in variables
+				usernameStorage = adminUserField.getText();
+				passwordStorage = new String(adminPassField.getPassword());	
+				
+				//Check login details
+				if(usernameStorage.contentEquals("") && passwordStorage.equals("")){
+					JOptionPane.showMessageDialog(loginFrame, "Please enter a username and password", "Error", JOptionPane.ERROR_MESSAGE);
+				}else if(usernameStorage.contentEquals("")) {
+					JOptionPane.showMessageDialog(loginFrame, "Please enter a username", "Error", JOptionPane.ERROR_MESSAGE);
+				}else if(passwordStorage.contentEquals("")) {
+					JOptionPane.showMessageDialog(loginFrame, "Please enter a password", "Error", JOptionPane.ERROR_MESSAGE);
+				}else if(GUI.passwordCheck(passwordStorage) && GUI.usernameCheck(usernameStorage)) {
+					System.out.println("Login successful");
+				}else {
+					//Catch incorrect username or password
+					JOptionPane.showMessageDialog(loginFrame, "Incorrect username or password", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+				
+			}
+			
+		}//End actionPerformed method
+	}//End eventHandler class
+	
+	
+	
 }
